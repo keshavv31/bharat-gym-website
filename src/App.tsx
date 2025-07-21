@@ -136,7 +136,13 @@ function App() {
                 <Route path="/book-classes" element={<Trainers />} />
               </Routes>
             </main>
-            {location.pathname !== '/profile' && location.pathname !== '/settings' && <Footer />}
+            {(() => {
+              // Hide footer on /profile, /settings, /goals, and any /workout/* route
+              const path = location.pathname;
+              const isWorkout = /^\/workout(\/|$)/.test(path);
+              const hideFooter = path === '/profile' || path === '/settings' || path === '/goals' || isWorkout;
+              return !hideFooter ? <Footer /> : null;
+            })()}
           </div>
         )}
       </WorkoutProvider>
